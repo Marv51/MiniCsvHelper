@@ -141,59 +141,11 @@ namespace CsvHelper.Tests.Reading
 			}
 		}
 
-		[Fact]
-		public void WillThrowOnMissingFieldStillWorksTest()
-		{
-			var missingFieldExceptionCount = 0;
-			var columnCountChangeExceptionCount = 0;
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				DetectColumnCountChanges = true,
-				HeaderValidated = null,
-				ReadingExceptionOccurred = (args) =>
-				{
-					if (args.Exception is MissingFieldException)
-					{
-						missingFieldExceptionCount++;
-					}
-					else if (args.Exception is BadDataException)
-					{
-						columnCountChangeExceptionCount++;
-					}
-
-					return false;
-				},
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var csv = new CsvReader(reader, config))
-			{
-				writer.WriteLine("1,2,3");
-				writer.WriteLine("4,5");
-				writer.Flush();
-				stream.Position = 0;
-
-				csv.Context.RegisterClassMap<TestMap>();
-				var records = csv.GetRecords<Test>().ToList();
-				Assert.Equal(1, missingFieldExceptionCount);
-				Assert.Equal(1, columnCountChangeExceptionCount);
-			}
-		}
-
+		
 		private class Test
 		{
 			public int Id { get; set; }
 			public string Name { get; set; }
-		}
-
-		private sealed class TestMap : ClassMap<Test>
-		{
-			public TestMap()
-			{
-				Map(m => m.Id);
-				Map(m => m.Name);
-			}
 		}
 	}
 }

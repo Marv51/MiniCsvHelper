@@ -9,7 +9,7 @@ using System.IO;
 namespace CsvHelper.Configuration
 {
 	/// <summary>
-	/// Configuration used for the <see cref="IWriter"/>.
+	/// The Write Configuration
 	/// </summary>
 	public interface IWriterConfiguration
 	{
@@ -51,23 +51,6 @@ namespace CsvHelper.Configuration
 		TrimOptions TrimOptions { get; }
 
 		/// <summary>
-		/// Gets a value indicating if fields should be sanitized
-		/// to prevent malicious injection. This covers MS Excel, 
-		/// Google Sheets and Open Office Calc.
-		/// </summary>
-		bool SanitizeForInjection { get; }
-
-		/// <summary>
-		/// Gets the characters that are used for injection attacks.
-		/// </summary>
-		char[] InjectionCharacters { get; }
-
-		/// <summary>
-		/// Gets the character used to escape a detected injection.
-		/// </summary>
-		char InjectionEscapeCharacter { get; }
-
-		/// <summary>
 		/// The newline string to use. Default is \r\n (CRLF).
 		/// When writing, this value is always used.
 		/// When reading, this value is only used if explicitly set. If not set,
@@ -82,12 +65,6 @@ namespace CsvHelper.Configuration
 		///   <c>true</c> if <see cref="NewLine"/> was set. <c>false</c> if <see cref="NewLine"/> is the default.
 		/// </value>
 		bool IsNewLineSet { get; }
-
-		/// <summary>
-		/// Gets a function that is used to determine if a field should get quoted 
-		/// when writing.
-		/// </summary>
-		ShouldQuote ShouldQuote { get; }
 
 		/// <summary>
 		/// Gets the culture info used to read and write CSV files.
@@ -112,49 +89,6 @@ namespace CsvHelper.Configuration
 		/// Default is true.
 		/// </summary>
 		bool HasHeaderRecord { get; }
-
-		/// <summary>
-		/// Gets a value indicating whether references
-		/// should be ignored when auto mapping. True to ignore
-		/// references, otherwise false. Default is false.
-		/// </summary>
-		bool IgnoreReferences { get; }
-
-		/// <summary>
-		/// Gets a value indicating if private
-		/// member should be read from and written to.
-		/// True to include private member, otherwise false. Default is false.
-		/// </summary>
-		bool IncludePrivateMembers { get; }
-
-		/// <summary>
-		/// Gets a callback that will return the prefix for a reference header.
-		/// </summary>
-		ReferenceHeaderPrefix ReferenceHeaderPrefix { get; }
-
-		/// <summary>
-		/// Gets the member types that are used when auto mapping.
-		/// MemberTypes are flags, so you can choose more than one.
-		/// Default is Properties.
-		/// </summary>
-		MemberTypes MemberTypes { get; }
-
-		/// <summary>
-		/// Gets a value indicating that during writing if a new 
-		/// object should be created when a reference member is null.
-		/// True to create a new object and use it's defaults for the
-		/// fields, or false to leave the fields empty for all the
-		/// reference member's member.
-		/// </summary>
-		bool UseNewObjectForNullReferenceMembers { get; }
-
-		/// <summary>
-		/// Gets the comparer used to order the properties
-		/// of dynamic objects when writing. The default is null,
-		/// which will preserve the order the object properties
-		/// were created with.
-		/// </summary>
-		IComparer<string> DynamicPropertySort { get; }
 
 		/// <summary>
 		/// A value indicating if exception messages contain raw CSV data.

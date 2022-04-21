@@ -14,35 +14,6 @@ namespace CsvHelper.Tests
 	public class DisposeTests
 	{
 		[Fact]
-		public void WriterFlushOnDisposeTest()
-		{
-			using (var writer = new StringWriter())
-			{
-				using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-				{
-					csv.WriteField("A");
-				}
-
-				Assert.Equal("A", writer.ToString());
-			}
-		}
-
-		[Fact]
-		public void WriterFlushOnDisposeWithFlushTest()
-		{
-			using (var writer = new StringWriter())
-			{
-				using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-				{
-					csv.WriteField("A");
-					csv.Flush();
-				}
-
-				Assert.Equal("A", writer.ToString());
-			}
-		}
-
-		[Fact]
 		public void DisposeShouldBeCallableMultipleTimes()
 		{
 			var parserMock = new ParserMock();

@@ -4,8 +4,6 @@
 // https://github.com/JoshClose/CsvHelper
 using System;
 using System.Globalization;
-using CsvHelper.TypeConversion;
-using System.Reflection;
 using System.Collections.Generic;
 using System.IO;
 
@@ -22,13 +20,6 @@ namespace CsvHelper.Configuration
 		/// Default is true.
 		/// </summary>
 		bool HasHeaderRecord { get; }
-
-		/// <summary>
-		/// Gets the function that is called when a header validation check is ran. The default function
-		/// will throw a <see cref="ValidationException"/> if there is no header for a given member mapping.
-		/// You can supply your own function to do other things like logging the issue instead of throwing an exception.
-		/// </summary>
-		HeaderValidated HeaderValidated { get; }
 
 		/// <summary>
 		/// Gets the function that is called when a missing field is found. The default function will
@@ -59,29 +50,6 @@ namespace CsvHelper.Configuration
 		PrepareHeaderForMatch PrepareHeaderForMatch { get; }
 
 		/// <summary>
-		/// Determines if constructor parameters should be used to create
-		/// the class instead of the default constructor and members.
-		/// </summary>
-		ShouldUseConstructorParameters ShouldUseConstructorParameters { get; }
-
-		/// <summary>
-		/// Chooses the constructor to use for constructor mapping.
-		/// </summary>
-		GetConstructor GetConstructor { get; }
-
-		/// <summary>
-		/// Gets the name to use for the property of the dynamic object.
-		/// </summary>
-		GetDynamicPropertyName GetDynamicPropertyName { get; }
-
-		/// <summary>
-		/// Gets a value indicating whether references
-		/// should be ignored when auto mapping. <c>true</c> to ignore
-		/// references, otherwise <c>false</c>. Default is false.
-		/// </summary>
-		bool IgnoreReferences { get; }
-
-		/// <summary>
 		/// Gets the callback that will be called to
 		/// determine whether to skip the given record or not.
 		/// </summary>
@@ -95,22 +63,10 @@ namespace CsvHelper.Configuration
 		bool IncludePrivateMembers { get; }
 
 		/// <summary>
-		/// Gets a callback that will return the prefix for a reference header.
-		/// </summary>
-		ReferenceHeaderPrefix ReferenceHeaderPrefix { get; }
-
-		/// <summary>
 		/// Gets a value indicating whether changes in the column
 		/// count should be detected. If true, a <see cref="BadDataException"/>
 		/// will be thrown if a different column count is detected.
 		/// </summary>
 		bool DetectColumnCountChanges { get; }
-
-		/// <summary>
-		/// Gets the member types that are used when auto mapping.
-		/// MemberTypes are flags, so you can choose more than one.
-		/// Default is Properties.
-		/// </summary>
-		MemberTypes MemberTypes { get; }
 	}
 }

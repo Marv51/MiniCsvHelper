@@ -117,27 +117,6 @@ namespace CsvHelper
 				catch { }
 			}
 
-			if (context.Writer != null)
-			{
-				details.AppendLine($"{nameof(IWriter)} state:");
-				details.AppendLine($"{indent}{nameof(IWriter.Row)}: {context.Writer.Row}");
-				details.AppendLine($"{indent}{nameof(IWriter.Index)}: {context.Writer.Index}");
-
-				var record = new StringBuilder();
-				if (context.Writer.HeaderRecord != null)
-				{
-					record.Append("[");
-					if (context.Writer.HeaderRecord.Length > 0)
-					{
-						record.Append("\"");
-						record.Append(string.Join("\",\"", context.Writer.HeaderRecord));
-						record.Append("\"");
-					}
-					record.Append("]");
-				}
-				details.AppendLine($"{indent}{nameof(IWriter.HeaderRecord)}:{Environment.NewLine}{context.Writer.Row}");
-			}
-
 			return $"{message}{Environment.NewLine}{details}";
 		}
 	}

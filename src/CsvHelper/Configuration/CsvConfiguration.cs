@@ -7,10 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-
-using CsvHelper.TypeConversion;
 
 namespace CsvHelper.Configuration
 {
@@ -67,16 +64,7 @@ namespace CsvHelper.Configuration
 		public virtual bool ExceptionMessagesContainRawData { get; set; } = true;
 
 		/// <inheritdoc/>
-		public virtual GetConstructor GetConstructor { get; set; } = ConfigurationFunctions.GetConstructor;
-
-		/// <inheritdoc/>
-		public virtual GetDynamicPropertyName GetDynamicPropertyName { get; set; } = ConfigurationFunctions.GetDynamicPropertyName;
-
-		/// <inheritdoc/>
 		public virtual bool HasHeaderRecord { get; set; } = true;
-
-		/// <inheritdoc/>
-		public virtual HeaderValidated HeaderValidated { get; set; } = ConfigurationFunctions.HeaderValidated;
 
 		/// <inheritdoc/>
 		public virtual bool IgnoreBlankLines { get; set; } = true;
@@ -101,9 +89,6 @@ namespace CsvHelper.Configuration
 
 		/// <inheritdoc/>
 		public virtual bool LineBreakInQuotedFieldIsBadData { get; set; }
-
-		/// <inheritdoc/>
-		public virtual MemberTypes MemberTypes { get; set; } = MemberTypes.Properties;
 
 		/// <inheritdoc/>
 		public virtual MissingFieldFound MissingFieldFound { get; set; } = ConfigurationFunctions.MissingFieldFound;
@@ -135,19 +120,7 @@ namespace CsvHelper.Configuration
 		public virtual ReadingExceptionOccurred ReadingExceptionOccurred { get; set; } = ConfigurationFunctions.ReadingExceptionOccurred;
 
 		/// <inheritdoc/>
-		public virtual ReferenceHeaderPrefix ReferenceHeaderPrefix { get; set; }
-
-		/// <inheritdoc/>
-		public virtual bool SanitizeForInjection { get; set; }
-
-		/// <inheritdoc/>
-		public ShouldQuote ShouldQuote { get; set; } = ConfigurationFunctions.ShouldQuote;
-
-		/// <inheritdoc/>
 		public virtual ShouldSkipRecord ShouldSkipRecord { get; set; } = ConfigurationFunctions.ShouldSkipRecord;
-
-		/// <inheritdoc/>
-		public virtual ShouldUseConstructorParameters ShouldUseConstructorParameters { get; set; } = ConfigurationFunctions.ShouldUseConstructorParameters;
 
 		/// <inheritdoc/>
 		public virtual TrimOptions TrimOptions { get; set; }

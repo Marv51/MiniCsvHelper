@@ -1177,30 +1177,5 @@ namespace CsvHelper.Tests.Parsing
 				Assert.Equal(line, parser.RawRecord.ToString());
 			}
 		}
-
-		[Fact]
-		public void ReadingTest()
-		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim | TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var csv = new CsvReader(reader, config))
-			{
-				writer.WriteLine("A,B");
-				writer.WriteLine("  \"  a b c  \"  ,  \"  d e f  \"  ");
-				writer.Flush();
-				stream.Position = 0;
-
-				var records = csv.GetRecords<dynamic>().ToList();
-
-				var record = records[0];
-				Assert.Equal("a b c", record.A);
-				Assert.Equal("d e f", record.B);
-			}
-		}
 	}
 }

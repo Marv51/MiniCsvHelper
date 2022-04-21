@@ -131,36 +131,5 @@ namespace CsvHelper.Tests.Reading
 			Assert.Equal(1, csv.GetFieldIndex("Id"));
 			Assert.Equal(0, csv.GetFieldIndex("Name"));
 		}
-
-		[Fact]
-		public void MultipleReadHeaderCallsWorksWithNamedIndexCacheTest()
-		{
-			var parser = new ParserMock
-			{
-				{ "Id", "Name", "Id", "Name" },
-				{ "1", "one", "2", "two" },
-				{ "Name", "Id", "Name", "Id" },
-				{ "three", "3", "four", "4" },
-			};
-			var csv = new CsvReader(parser);
-
-			csv.Read();
-			csv.ReadHeader();
-			csv.Read();
-
-			Assert.Equal(1, csv.GetField<int>("Id"));
-			Assert.Equal("one", csv.GetField("Name"));
-			Assert.Equal(2, csv.GetField<int>("Id", 1));
-			Assert.Equal("two", csv.GetField("Name", 1));
-
-			csv.Read();
-			csv.ReadHeader();
-			csv.Read();
-
-			Assert.Equal(3, csv.GetField<int>("Id"));
-			Assert.Equal("three", csv.GetField("Name"));
-			Assert.Equal(4, csv.GetField<int>("Id", 1));
-			Assert.Equal("four", csv.GetField("Name", 1));
-		}
 	}
 }

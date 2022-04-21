@@ -89,22 +89,5 @@ namespace CsvHelper.Tests.Parsing
 				Assert.Equal("\"a\"", parser[0]);
 			}
 		}
-
-		[Fact]
-		public void EscapeWriteTest()
-		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				Escape = '|',
-			};
-			using (var writer = new StringWriter())
-			using (var csv = new CsvWriter(writer, config))
-			{
-				csv.WriteField("\"a\"");
-				csv.Flush();
-
-				Assert.Equal("\"|\"a|\"\"", writer.ToString());
-			}
-		}
 	}
 }

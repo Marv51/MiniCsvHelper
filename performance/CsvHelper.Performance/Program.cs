@@ -46,7 +46,7 @@ namespace CsvHelper.Performance
 
 			return filePath;
 		}
-
+/*
 		static void WriteField(int columns = 50, int rows = 1_000_000, CsvConfiguration config = null)
 		{
 			Console.WriteLine("Writing using WriteField");
@@ -79,7 +79,8 @@ namespace CsvHelper.Performance
 			stopwatch.Stop();
 			Console.WriteLine(stopwatch.Elapsed);
 		}
-
+*/
+		/*
 		static void WriteRecords(int rows = 2_000_000)
 		{
 			Console.WriteLine("Writing using WriteRecords");
@@ -159,6 +160,7 @@ namespace CsvHelper.Performance
 			stopwatch.Stop();
 			Console.WriteLine(stopwatch.Elapsed);
 		}
+		*/
 
 		static void Parse()
 		{
@@ -184,7 +186,7 @@ namespace CsvHelper.Performance
 				Console.WriteLine(stopwatch.Elapsed);
 			}
 		}
-
+		/*
 		static void ReadGetField()
 		{
 			Console.WriteLine("Reading using GetField");
@@ -210,7 +212,8 @@ namespace CsvHelper.Performance
 			stopwatch.Stop();
 			Console.WriteLine(stopwatch.Elapsed);
 		}
-
+		*/
+		/*
 		static void ReadGetRecords()
 		{
 			Console.WriteLine($"Reading using GetRecords");
@@ -230,8 +233,9 @@ namespace CsvHelper.Performance
 			stopwatch.Stop();
 			Console.WriteLine(stopwatch.Elapsed);
 		}
+		*/
 
-		static async Task ReadGetRecordsAsync()
+		/*static async Task ReadGetRecordsAsync()
 		{
 			Console.WriteLine("Reading using GetRecordsAsync");
 			var stopwatch = new Stopwatch();
@@ -249,7 +253,7 @@ namespace CsvHelper.Performance
 
 			stopwatch.Stop();
 			Console.WriteLine(stopwatch.Elapsed);
-		}
+		}*/
 
 		private class Data
 		{
@@ -262,7 +266,7 @@ namespace CsvHelper.Performance
 			public DateTimeOffset Birthday { get; set; }
 		}
 
-		private class DataMap : ClassMap<Data>
+		/*private class DataMap : ClassMap<Data>
 		{
 			public DataMap()
 			{
@@ -271,7 +275,7 @@ namespace CsvHelper.Performance
 				Map(m => m.Age).Index(2);
 				Map(m => m.Birthday).Index(3);
 			}
-		}
+		}*/
 
 		public class Columns50
 		{
@@ -350,6 +354,7 @@ namespace CsvHelper.Performance
 		{
 		}
 
+		/*
 		[Benchmark]
 		public void GetRecordsFieldCache()
 		{
@@ -368,9 +373,10 @@ namespace CsvHelper.Performance
 				}
 			}
 		}
+		*/
 
 		//[Benchmark]
-		public void GetRecordsSpan()
+		/*public void GetRecordsSpan()
 		{
 			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 			{
@@ -386,9 +392,9 @@ namespace CsvHelper.Performance
 					record = csv.GetRecord<Program.Columns50>();
 				}
 			}
-		}
+		}*/
 
-		//[Benchmark]
+		[Benchmark]
 		public void Parse()
 		{
 			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
