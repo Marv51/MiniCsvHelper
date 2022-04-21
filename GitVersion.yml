@@ -4,7 +4,7 @@ assembly-file-versioning-format: '{Major}.{Minor}.{Patch}.{env:BUILD_NUMBER ?? 0
 branches:
   configuration-constructor:
     regex: configuration-constructor
-    source-branches: [ 'master' ]
+    source-branches: [ 'main' ]
     tag: beta
 ignore:
   sha: []
