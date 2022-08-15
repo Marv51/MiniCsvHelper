@@ -1,16 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<!-- Assembly -->
-		<AssemblyTitle>CsvHelper</AssemblyTitle>
+		<AssemblyTitle>MiniCsvHelper</AssemblyTitle>
 		<Description>A library for reading and writing CSV files. Extremely fast, flexible, and easy to use. Supports reading and writing of custom class objects.</Description>
-		<Copyright>Copyright © 2009-2021 Josh Close</Copyright>
-		<Authors>Josh Close</Authors>
+		<Copyright>Copyright © 2009-2021 Josh Close, with modifications by Marvin Rühe</Copyright>
+		<Authors>Marvin Rühe (Original by Josh Close)</Authors>
 
 		<!-- Build -->
 		<AssemblyName>CsvHelper</AssemblyName>
 		<TargetFrameworks>net6.0</TargetFrameworks>
-		<!--<TargetFrameworks>net50</TargetFrameworks>-->
-		<LangVersion>preview</LangVersion>
 		<RootNamespace>CsvHelper</RootNamespace>
 		<DefaultLanguage>en-US</DefaultLanguage>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -19,20 +17,23 @@
 		<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
 
 		<!-- NuGet -->
-		<PackageId>CsvHelper</PackageId>
+		<PackageId>MiniCsvHelper</PackageId>
 		<PackageTags>csv;csvhelper;comma;separated;value;delimited</PackageTags>
 		<PackageIcon>Icon.png</PackageIcon>
-		<PackageIconUrl>https://raw.github.com/JoshClose/CsvHelper/master/logo/Comma-Small.png</PackageIconUrl>
-		<PackageProjectUrl>https://joshclose.github.io/CsvHelper/</PackageProjectUrl>
-		<PackageReleaseNotes>https://joshclose.github.io/CsvHelper/change-log</PackageReleaseNotes>
+		<PackageIconUrl>https://raw.github.com/marv51/MiniCsvHelper/master/logo/Comma-Small.png</PackageIconUrl>
+		<PackageProjectUrl>https://github.com/marv51/MiniCsvHelper</PackageProjectUrl>
 		<PackageLicenseExpression>MS-PL OR Apache-2.0</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
-		<RepositoryUrl>https://github.com/JoshClose/CsvHelper</RepositoryUrl>
+		<RepositoryUrl>https://github.com/marv51/MiniCsvHelper</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
 		<IncludeSymbols>true</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<AssemblyVersion>1.1.0.1</AssemblyVersion>
+		<FileVersion>1.1.0.1</FileVersion>
+		<Version>1.1.0.1</Version>
 	</PropertyGroup>
 	
 	<ItemGroup>
