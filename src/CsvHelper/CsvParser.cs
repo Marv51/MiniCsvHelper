@@ -833,7 +833,7 @@ namespace CsvHelper
 
 		/// <inheritdoc/>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		protected ProcessedField ProcessRFC4180Field(in int start, in int length, in int quoteCount)
+		protected ProcessedField ProcessRFC4180Field(int start, int length, int quoteCount)
 		{
 			var newStart = start;
 			var newLength = length;
@@ -922,7 +922,7 @@ namespace CsvHelper
 
 		/// <inheritdoc/>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		protected ProcessedField ProcessRFC4180BadField(in int start, in int length)
+		protected ProcessedField ProcessRFC4180BadField(int start, int length)
 		{
 			// If field is already known to be bad, different rules can be applied.
 
@@ -1002,7 +1002,7 @@ namespace CsvHelper
 
 		/// <inheritdoc/>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		protected ProcessedField ProcessEscapeField(in int start, in int length)
+		protected ProcessedField ProcessEscapeField(int start, int length)
 		{
 			var newStart = start;
 			var newLength = length;
@@ -1049,7 +1049,7 @@ namespace CsvHelper
 
 		/// <inheritdoc/>
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		protected ProcessedField ProcessNoEscapeField(in int start, in int length)
+		protected ProcessedField ProcessNoEscapeField(int start, int length)
 		{
 			var newStart = start;
 			var newLength = length;
