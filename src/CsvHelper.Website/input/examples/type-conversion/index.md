@@ -1,3 +1,0 @@
-﻿# Type Conversion
-
-Coming soon...
