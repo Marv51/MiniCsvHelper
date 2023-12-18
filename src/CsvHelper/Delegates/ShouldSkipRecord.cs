@@ -2,36 +2,30 @@
 // This file is a part of CsvHelper and is dual licensed under MS-PL and Apache 2.0.
 // See LICENSE.txt for details or visit http://www.opensource.org/licenses/ms-pl.html for MS-PL and http://opensource.org/licenses/Apache-2.0 for Apache 2.0.
 // https://github.com/JoshClose/CsvHelper
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CsvHelper
+namespace CsvHelper;
+
+/// <summary>
+/// Function that determines whether to skip the given record or not.
+/// </summary>
+public delegate bool ShouldSkipRecord(ShouldSkipRecordArgs args);
+
+/// <summary>
+/// ShouldSkipRecord args.
+/// </summary>
+public readonly struct ShouldSkipRecordArgs
 {
 	/// <summary>
-	/// Function that determines whether to skip the given record or not.
+	/// The record.
 	/// </summary>
-	public delegate bool ShouldSkipRecord(ShouldSkipRecordArgs args);
+	public readonly string[] Record;
 
 	/// <summary>
-	/// ShouldSkipRecord args.
+	/// Creates a new instance of ShouldSkipRecordArgs.
 	/// </summary>
-	public readonly struct ShouldSkipRecordArgs
+	/// <param name="record">The record.</param>
+	public ShouldSkipRecordArgs(string[] record)
 	{
-		/// <summary>
-		/// The record.
-		/// </summary>
-		public readonly string[] Record;
-
-		/// <summary>
-		/// Creates a new instance of ShouldSkipRecordArgs.
-		/// </summary>
-		/// <param name="record">The record.</param>
-		public ShouldSkipRecordArgs(string[] record)
-		{
-			Record = record;
-		}
+		Record = record;
 	}
 }

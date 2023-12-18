@@ -8,7 +8,7 @@
 
 		<!-- Build -->
 		<AssemblyName>CsvHelper</AssemblyName>
-		<TargetFrameworks>net7.0</TargetFrameworks>
+		<TargetFrameworks>net8.0</TargetFrameworks>
 		<RootNamespace>CsvHelper</RootNamespace>
 		<DefaultLanguage>en-US</DefaultLanguage>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -17,7 +17,8 @@
 		<EnableTrimAnalyzer>true</EnableTrimAnalyzer>
 		<EnableAotAnalyzer>true</EnableAotAnalyzer>
 		<EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
-
+		<ImplicitUsings>enable</ImplicitUsings>
+		
 		<!-- NuGet -->
 		<PackageId>MiniCsvHelper</PackageId>
 		<PackageTags>csv;csvhelper;comma;separated;value;delimited</PackageTags>
@@ -33,9 +34,9 @@
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<AssemblyVersion>1.1.0.3</AssemblyVersion>
-		<FileVersion>1.1.0.3</FileVersion>
-		<Version>1.1.0.3</Version>
+		<AssemblyVersion>1.1.0.4</AssemblyVersion>
+		<FileVersion>1.1.0.4</FileVersion>
+		<Version>1.1.0.4</Version>
 	</PropertyGroup>
 	
 	<ItemGroup>
