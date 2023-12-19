@@ -28,7 +28,7 @@ jobs:
         run: dotnet test
 
       - name: Build Release
-        run: dotnet build -c Release /p:PublicRelease=true
+        run: dotnet build -c Release
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
