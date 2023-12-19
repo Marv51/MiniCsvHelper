@@ -2,74 +2,68 @@
 // This file is a part of CsvHelper and is dual licensed under MS-PL and Apache 2.0.
 // See LICENSE.txt for details or visit http://www.opensource.org/licenses/ms-pl.html for MS-PL and http://opensource.org/licenses/Apache-2.0 for Apache 2.0.
 // https://github.com/JoshClose/CsvHelper
-using System.Globalization;
-using System.IO;
-using System.Linq;
 using CsvHelper.Tests.Mocks;
-using Xunit;
 
-namespace CsvHelper.Tests.Exceptions
+namespace CsvHelper.Tests.Exceptions;
+
+public class ExceptionMessageTests
 {
-	
-	public class ExceptionMessageTests
+	[Fact]
+	public void GetMissingFieldTest()
 	{
-		[Fact]
-		public void GetMissingFieldTest()
+		var parser = new ParserMock
 		{
-			var parser = new ParserMock
-			{
-				{ "Id", "Name" },
-				{ "a", "b" },
-				null
-			};
+			{ "Id", "Name" },
+			{ "a", "b" },
+			null
+		};
 
-			var reader = new CsvReader(parser);
-			reader.Read();
-			reader.Read();
-			try
-			{
-				reader.GetField(2);
-				throw new XunitException();
-			}
-			catch (MissingFieldException ex)
-			{
-				Assert.Equal(2, ex.Context.Parser.Row);
-				Assert.Equal(2, ex.Context.Reader.CurrentIndex);
-			}
-		}
-
-		[Fact]
-		public void GetFieldIndexTest()
+		var reader = new CsvReader(parser);
+		reader.Read();
+		reader.Read();
+		try
 		{
-			var parser = new ParserMock
-			{
-				{ "Id", "Name" },
-				{ "a", "b" },
-				null
-			};
-
-			var reader = new CsvReader(parser);
-			reader.Read();
-			reader.ReadHeader();
-			reader.Read();
-
-			try
-			{
-				reader.GetField("c");
-				throw new XunitException();
-			}
-			catch (MissingFieldException ex)
-			{
-				Assert.Equal(2, ex.Context.Parser.Row);
-				Assert.Equal(-1, ex.Context.Reader.CurrentIndex);
-			}
+			reader.GetField(2);
+			throw new XunitException();
 		}
-
-		private class Simple
+		catch (MissingFieldException ex)
 		{
-			public int Id { get; set; }
-
-			public string Name { get; set; }
+			Assert.Equal(2, ex.Context.Parser.Row);
+			Assert.Equal(2, ex.Context.Reader.CurrentIndex);
 		}
+	}
+
+	[Fact]
+	public void GetFieldIndexTest()
+	{
+		var parser = new ParserMock
+		{
+			{ "Id", "Name" },
+			{ "a", "b" },
+			null
+		};
+
+		var reader = new CsvReader(parser);
+		reader.Read();
+		reader.ReadHeader();
+		reader.Read();
+
+		try
+		{
+			reader.GetField("c");
+			throw new XunitException();
+		}
+		catch (MissingFieldException ex)
+		{
+			Assert.Equal(2, ex.Context.Parser.Row);
+			Assert.Equal(-1, ex.Context.Reader.CurrentIndex);
+		}
+	}
+
+	private class Simple
+	{
+		public int Id { get; set; }
+
+		public string Name { get; set; }
 	}
 }

@@ -3,24 +3,18 @@
 // See LICENSE.txt for details or visit http://www.opensource.org/licenses/ms-pl.html for MS-PL and http://opensource.org/licenses/Apache-2.0 for Apache 2.0.
 // https://github.com/JoshClose/CsvHelper
 using CsvHelper.Tests.Mocks;
-using Xunit;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
 
-namespace CsvHelper.Tests
+namespace CsvHelper.Tests;
+
+public class DisposeTests
 {
-	
-	public class DisposeTests
+	[Fact]
+	public void DisposeShouldBeCallableMultipleTimes()
 	{
-		[Fact]
-		public void DisposeShouldBeCallableMultipleTimes()
-		{
-			var parserMock = new ParserMock();
-			var reader = new CsvReader(parserMock);
+		var parserMock = new ParserMock();
+		var reader = new CsvReader(parserMock);
 
-			reader.Dispose();
-			reader.Dispose();
-		}
+		reader.Dispose();
+		reader.Dispose();
 	}
 }

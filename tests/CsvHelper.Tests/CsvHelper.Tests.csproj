@@ -2,11 +2,13 @@
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="*.ncrunchproject" />
+		<Using Include="Xunit" />
 	</ItemGroup>
+
 
 	<ItemGroup>
 		<PackageReference Include="Castle.Core" Version="4.4.1" />

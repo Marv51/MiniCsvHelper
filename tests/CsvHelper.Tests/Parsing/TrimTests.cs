@@ -3,1179 +3,1076 @@
 // See LICENSE.txt for details or visit http://www.opensource.org/licenses/ms-pl.html for MS-PL and http://opensource.org/licenses/Apache-2.0 for Apache 2.0.
 // https://github.com/JoshClose/CsvHelper
 using CsvHelper.Configuration;
-using Xunit;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 
-namespace CsvHelper.Tests.Parsing
+namespace CsvHelper.Tests.Parsing;
+
+public class TrimTests
 {
-	
-	public class TrimTests
+	[Fact]
+	public void OutsideStartTest()
 	{
-		[Fact]
-		public void OutsideStartTest()
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  a,b\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  a,b\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideStartNoNewlineTest()
+	[Fact]
+	public void OutsideStartNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  a,b";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  a,b";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideStartSpacesInFieldTest()
+	[Fact]
+	public void OutsideStartSpacesInFieldTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  a b c,d\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  a b c,d\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideStartSpacesInFieldNoNewlineTest()
+	[Fact]
+	public void OutsideStartSpacesInFieldNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  a b c,d";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  a b c,d";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideEndTest()
+	[Fact]
+	public void OutsideEndTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "a  ,b\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "a  ,b\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideEndNoNewlineTest()
+	[Fact]
+	public void OutsideEndNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "a  ,b";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "a  ,b";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideEndSpacesInFieldTest()
+	[Fact]
+	public void OutsideEndSpacesInFieldTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "a b c  ,d\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "a b c  ,d\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideEndSpacesInFieldNoNewlineTest()
+	[Fact]
+	public void OutsideEndSpacesInFieldNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "a b c  ,d";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "a b c  ,d";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideBothTest()
+	[Fact]
+	public void OutsideBothTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  a  ,b\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  a  ,b\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideBothNoNewlineTest()
+	[Fact]
+	public void OutsideBothNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  a  ,b";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  a  ,b";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideBothSpacesInFieldTest()
+	[Fact]
+	public void OutsideBothSpacesInFieldTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  a b c  ,d\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  a b c  ,d\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideBothSpacesInFieldNoNewlineTest()
+	[Fact]
+	public void OutsideBothSpacesInFieldNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  a b c  ,d";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  a b c  ,d";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideQuotesStartTest()
+	[Fact]
+	public void OutsideQuotesStartTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  \"a\",b\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  \"a\",b\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideQuotesStartNoNewlineTest()
+	[Fact]
+	public void OutsideQuotesStartNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  \"a\",b";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  \"a\",b";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideQuotesStartSpacesInFieldTest()
+	[Fact]
+	public void OutsideQuotesStartSpacesInFieldTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  \"a b c\",d\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  \"a b c\",d\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideQuotesStartSpacesInFieldNoNewlineTest()
+	[Fact]
+	public void OutsideQuotesStartSpacesInFieldNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  \"a b c\",d";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  \"a b c\",d";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideQuotesEndTest()
+	[Fact]
+	public void OutsideQuotesEndTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"a\"  ,b";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"a\"  ,b";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideQuotesEndNoNewlineTest()
+	[Fact]
+	public void OutsideQuotesEndNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"a\"  ,b";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"a\"  ,b";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideQuotesEndSpacesInFieldTest()
+	[Fact]
+	public void OutsideQuotesEndSpacesInFieldTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"a b c\"  ,d\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"a b c\"  ,d\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideQuotesEndSpacesInFieldNoNewlineTest()
+	[Fact]
+	public void OutsideQuotesEndSpacesInFieldNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"a b c\"  ,d";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"a b c\"  ,d";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideQuotesBothTest()
+	[Fact]
+	public void OutsideQuotesBothTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  \"a\"  ,b\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  \"a\"  ,b\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideQuotesBothNoNewlineTest()
+	[Fact]
+	public void OutsideQuotesBothNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  \"a\"  ,b";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  \"a\"  ,b";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideQuotesBothSpacesInFieldTest()
+	[Fact]
+	public void OutsideQuotesBothSpacesInFieldTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  \"a b c\"  ,d\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  \"a b c\"  ,d\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideQuotesBothSpacesInFieldNoNewlineTest()
+	[Fact]
+	public void OutsideQuotesBothSpacesInFieldNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  \"a b c\"  ,d";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  \"a b c\"  ,d";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideQuotesBothSpacesInFieldMultipleRecordsTest()
+	[Fact]
+	public void OutsideQuotesBothSpacesInFieldMultipleRecordsTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  a b c  ,  d e f  \r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  a b c  ,  d e f  \r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal("d e f", parser[1]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal("d e f", parser[1]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideQuotesBothSpacesInFieldMultipleRecordsNoNewlineTest()
+	[Fact]
+	public void OutsideQuotesBothSpacesInFieldMultipleRecordsNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  a b c  ,  d e f  ";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  a b c  ,  d e f  ";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal("d e f", parser[1]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal("d e f", parser[1]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesStartTest()
+	[Fact]
+	public void InsideQuotesStartTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"  a\",b\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"  a\",b\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesStartNoNewlineTest()
+	[Fact]
+	public void InsideQuotesStartNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"  a\",b";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"  a\",b";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesStartSpacesInFieldTest()
+	[Fact]
+	public void InsideQuotesStartSpacesInFieldTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"  a b c\",b\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"  a b c\",b\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesStartSpacesInFieldNoNewlineTest()
+	[Fact]
+	public void InsideQuotesStartSpacesInFieldNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"  a b c\",b";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"  a b c\",b";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesStartSpacesInFieldDelimiterInFieldNoNewlineTest()
+	[Fact]
+	public void InsideQuotesStartSpacesInFieldDelimiterInFieldNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\" a ,b c\",b\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\" a ,b c\",b\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a ,b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a ,b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesStartSpacesInFieldDelimiterInFieldSmallBufferNoNewlineTest()
+	[Fact]
+	public void InsideQuotesStartSpacesInFieldDelimiterInFieldSmallBufferNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-				BufferSize = 1,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\" a ,b c\",b\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.InsideQuotes,
+			BufferSize = 1,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\" a ,b c\",b\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a ,b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a ,b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesEndTest()
+	[Fact]
+	public void InsideQuotesEndTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"a  \",b\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"a  \",b\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesEndNoNewlineTest()
+	[Fact]
+	public void InsideQuotesEndNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"a  \",b";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"a  \",b";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesEndSpacesInFieldTest()
+	[Fact]
+	public void InsideQuotesEndSpacesInFieldTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"a b c  \",d\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"a b c  \",d\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesEndSpacesInFieldNoNewlineTest()
+	[Fact]
+	public void InsideQuotesEndSpacesInFieldNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"a b c  \",d";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"a b c  \",d";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesBothTest()
+	[Fact]
+	public void InsideQuotesBothTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"  a  \",b\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"  a  \",b\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesBothNoNewlineTest()
+	[Fact]
+	public void InsideQuotesBothNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"  a  \",b";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"  a  \",b";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesBothSpacesInFieldTest()
+	[Fact]
+	public void InsideQuotesBothSpacesInFieldTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"  a b c  \",d\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"  a b c  \",d\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesBothSpacesInFieldNoNewlineTest()
+	[Fact]
+	public void InsideQuotesBothSpacesInFieldNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"  a b c  \",d";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"  a b c  \",d";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesBothSpacesInFieldMultipleRecordsTest()
+	[Fact]
+	public void InsideQuotesBothSpacesInFieldMultipleRecordsTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"  a b c  \",\"  d e f  \"\r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"  a b c  \",\"  d e f  \"\r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal("d e f", parser[1]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal("d e f", parser[1]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesBothSpacesInFieldMultipleRecordsNoNewlineTest()
+	[Fact]
+	public void InsideQuotesBothSpacesInFieldMultipleRecordsNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "\"  a b c  \",\"  d e f  \"";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "\"  a b c  \",\"  d e f  \"";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal("d e f", parser[1]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal("d e f", parser[1]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideAndInsideQuotesTest()
+	[Fact]
+	public void OutsideAndInsideQuotesTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim | TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  \"  a b c  \"  ,  \"  d e f  \"  \r\n";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim | TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  \"  a b c  \"  ,  \"  d e f  \"  \r\n";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal("d e f", parser[1]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal("d e f", parser[1]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideAndInsideQuotesNoNewlineTest()
+	[Fact]
+	public void OutsideAndInsideQuotesNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim | TrimOptions.InsideQuotes,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "  \"  a b c  \"  ,  \"  d e f  \"  ";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim | TrimOptions.InsideQuotes,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "  \"  a b c  \"  ,  \"  d e f  \"  ";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b c", parser[0]);
-				Assert.Equal("d e f", parser[1]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b c", parser[0]);
+		Assert.Equal("d e f", parser[1]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideQuotesNoSpacesNoNewlineTest()
+	[Fact]
+	public void OutsideQuotesNoSpacesNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "abc";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "abc";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("abc", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("abc", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void OutsideQuotesNoSpacesHasSpaceInFieldNoNewlineTest()
+	[Fact]
+	public void OutsideQuotesNoSpacesHasSpaceInFieldNoNewlineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.Trim,
-			};
-			using (var stream = new MemoryStream())
-			using (var writer = new StreamWriter(stream))
-			using (var reader = new StreamReader(stream))
-			using (var parser = new CsvParser(reader, config))
-			{
-				var line = "a b";
-				writer.Write(line);
-				writer.Flush();
-				stream.Position = 0;
+			TrimOptions = TrimOptions.Trim,
+		};
+		using var stream = new MemoryStream();
+		using var writer = new StreamWriter(stream);
+		using var reader = new StreamReader(stream);
+		using var parser = new CsvParser(reader, config);
+		var line = "a b";
+		writer.Write(line);
+		writer.Flush();
+		stream.Position = 0;
 
-				parser.Read();
+		parser.Read();
 
-				Assert.Equal("a b", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a b", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideNoSpacesQuotesFieldHasEscapedQuotesTest()
+	[Fact]
+	public void InsideNoSpacesQuotesFieldHasEscapedQuotesTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			var line = "\"a \"\"b\"\" c\"";
-			using (var reader = new StringReader(line))
-			using (var parser = new CsvParser(reader, config))
-			{
-				parser.Read();
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		var line = "\"a \"\"b\"\" c\"";
+		using var reader = new StringReader(line);
+		using var parser = new CsvParser(reader, config);
+		parser.Read();
 
-				Assert.Equal("a \"b\" c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a \"b\" c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesBothSpacesFieldHasEscapedQuotesTest()
+	[Fact]
+	public void InsideQuotesBothSpacesFieldHasEscapedQuotesTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			var line = "\" a \"\"b\"\" c \"\r\n";
-			using (var reader = new StringReader(line))
-			using (var parser = new CsvParser(reader, config))
-			{
-				parser.Read();
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		var line = "\" a \"\"b\"\" c \"\r\n";
+		using var reader = new StringReader(line);
+		using var parser = new CsvParser(reader, config);
+		parser.Read();
 
-				Assert.Equal("a \"b\" c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a \"b\" c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
+	}
 
-		[Fact]
-		public void InsideQuotesBothSpacesFieldHasEscapedQuotesNoNewLineTest()
+	[Fact]
+	public void InsideQuotesBothSpacesFieldHasEscapedQuotesNoNewLineTest()
+	{
+		var config = new CsvConfiguration(CultureInfo.InvariantCulture)
 		{
-			var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-			{
-				TrimOptions = TrimOptions.InsideQuotes,
-			};
-			var line = "\" a \"\"b\"\" c \"";
-			using (var reader = new StringReader(line))
-			using (var parser = new CsvParser(reader, config))
-			{
-				parser.Read();
+			TrimOptions = TrimOptions.InsideQuotes,
+		};
+		var line = "\" a \"\"b\"\" c \"";
+		using var reader = new StringReader(line);
+		using var parser = new CsvParser(reader, config);
+		parser.Read();
 
-				Assert.Equal("a \"b\" c", parser[0]);
-				Assert.Equal(line, parser.RawRecord.ToString());
-			}
-		}
+		Assert.Equal("a \"b\" c", parser[0]);
+		Assert.Equal(line, parser.RawRecord.ToString());
 	}
 }
