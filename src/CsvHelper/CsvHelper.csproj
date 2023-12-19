@@ -35,6 +35,11 @@
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(CI)' == 'true'">
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -46,5 +51,6 @@
 		<PackageReference Include="Nerdbank.GitVersioning"
                     Version="3.6.133"
                     PrivateAssets="all" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
 	</ItemGroup>
 </Project>
