@@ -1,0 +1,39 @@
+name:  MiniCsvHelper Continuous Integration
+
+on: [push]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      
+      - name: Display dotnet version
+        run: dotnet --version
+
+      - name: Build
+        run: dotnet build
+
+      - name: Run tests
+        run: dotnet test
+
+      - name: Build Release
+        run: dotnet build -c Release
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: Nuget-Package
+          if-no-files-found: error
+          path: |
+            ${{ github.workspace }}/src/CsvHelper/bin/Release/*.nupkg
+            ${{ github.workspace }}/src/CsvHelper/bin/Release/*.snupkg
+
