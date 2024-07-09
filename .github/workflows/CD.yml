@@ -1,11 +1,19 @@
 name:  MiniCsvHelper Continuous Integration
 
-on: [push]
+on: 
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
 
   build:
     runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+      contents: read
 
     steps:
       - name: Checkout
@@ -38,3 +46,8 @@ jobs:
           path: |
             ${{ github.workspace }}/src/CsvHelper/bin/Release/*.nupkg
 
+      - name: Prep packages
+        run: dotnet nuget add source --username marv51 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/marv51/index.json"
+
+      - name: Push package to GitHub packages 
+        run: dotnet nuget push src/CsvHelper/bin/Release/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }}  --source "github"

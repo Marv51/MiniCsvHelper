@@ -7,7 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
-		CsvHelper.sln.licenseheader = CsvHelper.sln.licenseheader
 		README.markdown = README.markdown
 	EndProjectSection
 EndProject
@@ -17,7 +16,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvHelper.Tests", "tests\Cs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CsvHelper.Performance", "performance\CsvHelper.Performance\CsvHelper.Performance.csproj", "{F1C225F2-92FC-41BB-94BF-733454DD2A9D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelaniCSVHelper", "TelaniCSVHelper\TelaniCSVHelper.csproj", "{8C33E5DF-2F2E-4FE3-91DD-C6683B310221}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApp", "TestApp\TestApp.csproj", "{8C33E5DF-2F2E-4FE3-91DD-C6683B310221}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

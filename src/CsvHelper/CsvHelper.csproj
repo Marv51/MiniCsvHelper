@@ -18,20 +18,19 @@
 		<EnableAotAnalyzer>true</EnableAotAnalyzer>
 		<EnableSingleFileAnalyzer>true</EnableSingleFileAnalyzer>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
 		
 		<!-- NuGet -->
 		<PackageId>MiniCsvHelper</PackageId>
 		<PackageTags>csv;csvhelper;comma;separated;value;delimited</PackageTags>
-		<PackageIcon>Icon.png</PackageIcon>
-		<PackageIconUrl>https://raw.github.com/marv51/MiniCsvHelper/master/logo/Comma-Small.png</PackageIconUrl>
 		<PackageProjectUrl>https://github.com/marv51/MiniCsvHelper</PackageProjectUrl>
 		<PackageLicenseExpression>MS-PL OR Apache-2.0</PackageLicenseExpression>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
 		<RepositoryUrl>https://github.com/marv51/MiniCsvHelper</RepositoryUrl>
 		<RepositoryType>git</RepositoryType>
-		<IncludeSymbols>true</IncludeSymbols>
-		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<IncludeSymbols>false</IncludeSymbols>
+		<DebugType>Embedded</DebugType>
 		<EmbedUntrackedSources>true</EmbedUntrackedSources>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -43,14 +42,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="Icon.png" Pack="true" PackagePath="\" />
-		<None Include="..\..\README.md" Pack="true" PackagePath="\"/>
+		<None Include="..\..\README.md" Pack="true" PackagePath="\" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Nerdbank.GitVersioning"
-                    Version="3.6.133"
-                    PrivateAssets="all" />
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All"/>
+		<PackageReference Include="Nerdbank.GitVersioning" Version="3.6.133" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
 	</ItemGroup>
 </Project>
