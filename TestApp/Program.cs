@@ -1,12 +1,11 @@
-﻿// See https://aka.ms/new-console-template for more information
-using CsvHelper;
+﻿using CsvHelper;
 using CsvHelper.Configuration;
 using System.Globalization;
 using System.Text;
 
 Console.WriteLine("Hello, World!");
 
-using var stream = File.OpenRead(@"C:\Users\Arbeit\OneDrive - gb&t Gebäudebestand und Technik GmbH\Telani\General\Design Dokumente\Matrix Dokumente\Export-2021-11-24 17-52-43\aktorCSV-7igJ.csv");
+using var stream = File.OpenRead(@"testfile.csv");
 string[]? header = null;
 var encoding = Encoding.UTF8;
 using var reader = new StreamReader(stream, encoding, true);
