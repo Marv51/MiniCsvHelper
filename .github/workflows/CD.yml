@@ -1,4 +1,4 @@
-name:  MiniCsvHelper Continuous Integration
+name:  MiniCsvHelper Continuous Deployment
 
 on: 
   push:
