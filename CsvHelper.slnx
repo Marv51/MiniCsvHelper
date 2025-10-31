@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path="README.markdown" />
+  </Folder>
+  <Project Path="performance/CsvHelper.Performance/CsvHelper.Performance.csproj" />
+  <Project Path="src/CsvHelper/CsvHelper.csproj" />
+  <Project Path="TestApp/TestApp.csproj" />
+  <Project Path="tests/CsvHelper.Tests/CsvHelper.Tests.csproj" />
+  <Properties Name="Performance">
+    <Property Name="HasPerformanceSessions" Value="true" />
+  </Properties>
+</Solution>
