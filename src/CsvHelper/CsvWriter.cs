@@ -10,15 +10,12 @@ namespace CsvHelper;
 public class CsvWriter : IDisposable
 {
 	private readonly TextWriter writer;
-	private string newLine = "\r\n";
-	private string quoteString = "\"";
-	private string delimiter = ";";
-	private readonly bool leaveOpen;
-	private char quote = '"';
+	private readonly string newLine = "\r\n";
+	private readonly string quoteString = "\"";
+	private readonly string delimiter = ";";
+	private readonly char quote = '"';
 	private readonly char comment = '#';
 	private readonly string escapeQuoteString;
-	private readonly char[] injectionCharacters;
-	private readonly char injectionEscapeCharacter;
 
 	private int row = 1;
 	private int index;
@@ -47,7 +44,7 @@ public class CsvWriter : IDisposable
 	public CsvWriter(TextWriter writer)
 	{
 		this.writer = writer;
-		escapeQuoteString = new string(new[] { '"' });
+		escapeQuoteString = new string(['"']);
 		buffer = new char[bufferSize];
 	}
 
@@ -82,7 +79,7 @@ public class CsvWriter : IDisposable
 			headerRecord.Add(header);
 		}
 
-		HeaderRecord = headerRecord.ToArray();
+		HeaderRecord = [.. headerRecord];
 	}
 
 	/// <summary>
@@ -139,34 +136,12 @@ public class CsvWriter : IDisposable
 		(
 			field.Contains(quote) // Contains quote
 			|| field[0] == ' ' // Starts with a space
-			|| field[field.Length - 1] == ' ' // Ends with a space
+			|| field[^1] == ' ' // Ends with a space
 			|| (delimiter.Length > 0 && field.Contains(delimiter)) // Contains delimiter
 			|| field.Contains(newLine) // Contains newline
 		);
 
 		return shouldQuote;
-	}
-
-	/// <inheritdoc/>
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	protected virtual string SanitizeForInjection(string field)
-	{
-		if (string.IsNullOrEmpty(field))
-		{
-			return field;
-		}
-
-		if (ArrayHelper.Contains(injectionCharacters, field[0]))
-		{
-			return injectionEscapeCharacter + field;
-		}
-
-		if (field[0] == quote && ArrayHelper.Contains(injectionCharacters, field[1]))
-		{
-			return field[0].ToString() + injectionEscapeCharacter.ToString() + field.Substring(1);
-		}
-
-		return field;
 	}
 
 	/// <inheritdoc/>
@@ -266,11 +241,7 @@ public class CsvWriter : IDisposable
 		if (disposing)
 		{
 			// Dispose managed state (managed objects)
-
-			if (!leaveOpen)
-			{
-				writer.Dispose();
-			}
+			writer.Dispose();
 		}
 
 		// Free unmanaged resources (unmanaged objects) and override finalizer
@@ -301,11 +272,7 @@ public class CsvWriter : IDisposable
 		if (disposing)
 		{
 			// Dispose managed state (managed objects)
-
-			if (!leaveOpen)
-			{
-				await writer.DisposeAsync().ConfigureAwait(false);
-			}
+			await writer.DisposeAsync().ConfigureAwait(false);
 		}
 
 		// Free unmanaged resources (unmanaged objects) and override finalizer

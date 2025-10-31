@@ -243,11 +243,6 @@ public class CsvReaderTests
 		public string Name { get; set; }
 	}
 
-	private class OnlyFields
-	{
-		public string Name;
-	}
-
 	private class TestBoolean
 	{
 		public bool BoolColumn { get; set; }

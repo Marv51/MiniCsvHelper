@@ -48,9 +48,6 @@ public record CsvConfiguration : IReaderConfiguration, IWriterConfiguration
 	public virtual bool DetectColumnCountChanges { get; set; }
 
 	/// <inheritdoc/>
-	public virtual IComparer<string> DynamicPropertySort { get; set; }
-
-	/// <inheritdoc/>
 	public virtual Encoding Encoding { get; set; } = Encoding.UTF8;
 
 	/// <inheritdoc/>
@@ -64,18 +61,6 @@ public record CsvConfiguration : IReaderConfiguration, IWriterConfiguration
 
 	/// <inheritdoc/>
 	public virtual bool IgnoreBlankLines { get; set; } = true;
-
-	/// <inheritdoc/>
-	public virtual bool IgnoreReferences { get; set; }
-
-	/// <inheritdoc/>
-	public virtual bool IncludePrivateMembers { get; set; }
-
-	/// <inheritdoc/>
-	public virtual char[] InjectionCharacters { get; set; } = ['=', '@', '+', '-'];
-
-	/// <inheritdoc/>
-	public virtual char InjectionEscapeCharacter { get; set; } = '\t';
 
 	/// <inheritdoc/>
 	public bool IsNewLineSet { get; private set; }
@@ -122,10 +107,7 @@ public record CsvConfiguration : IReaderConfiguration, IWriterConfiguration
 	public virtual TrimOptions TrimOptions { get; set; }
 
 	/// <inheritdoc/>
-	public virtual bool UseNewObjectForNullReferenceMembers { get; set; } = true;
-
-	/// <inheritdoc/>
-	public virtual char[] WhiteSpaceChars { get; set; } = new char[] { ' ' };
+	public virtual char[] WhiteSpaceChars { get; set; } = [' '];
 
 	/// <summary>
 	/// Initializes a new instance of the <see cref="CsvConfiguration"/> class

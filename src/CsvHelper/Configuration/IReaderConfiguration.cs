@@ -53,13 +53,6 @@ public interface IReaderConfiguration : IParserConfiguration
 	ShouldSkipRecord ShouldSkipRecord { get; }
 
 	/// <summary>
-	/// Gets a value indicating if private
-	/// member should be read from and written to.
-	/// <c>true</c> to include private member, otherwise <c>false</c>. Default is false.
-	/// </summary>
-	bool IncludePrivateMembers { get; }
-
-	/// <summary>
 	/// Gets a value indicating whether changes in the column
 	/// count should be detected. If true, a <see cref="BadDataException"/>
 	/// will be thrown if a different column count is detected.
