@@ -19,10 +19,8 @@ public class CsvReader : IReader
 	private readonly bool hasHeaderRecord;
 	private readonly ShouldSkipRecord shouldSkipRecord;
 	private readonly ReadingExceptionOccurred readingExceptionOccurred;
-	private readonly CultureInfo cultureInfo;
 	private readonly bool ignoreBlankLines;
 	private readonly MissingFieldFound missingFieldFound;
-	private readonly bool includePrivateMembers;
 	private readonly PrepareHeaderForMatch prepareHeaderForMatch;
 
 	private CsvContext context;
@@ -79,11 +77,9 @@ public class CsvReader : IReader
 		context = parser.Context ?? throw new InvalidOperationException($"For {nameof(IParser)} to be used in {nameof(CsvReader)}, {nameof(IParser.Context)} must also implement {nameof(CsvContext)}.");
 		context.Reader = this;
 
-		cultureInfo = Configuration.CultureInfo;
 		detectColumnCountChanges = Configuration.DetectColumnCountChanges;
 		hasHeaderRecord = Configuration.HasHeaderRecord;
 		ignoreBlankLines = Configuration.IgnoreBlankLines;
-		includePrivateMembers = Configuration.IncludePrivateMembers;
 		missingFieldFound = Configuration.MissingFieldFound;
 		prepareHeaderForMatch = Configuration.PrepareHeaderForMatch;
 		readingExceptionOccurred = Configuration.ReadingExceptionOccurred;
@@ -261,16 +257,13 @@ public class CsvReader : IReader
 	/// <inheritdoc/>
 	public virtual int GetFieldIndex(string name, int index = 0, bool isTryGet = false)
 	{
-		return GetFieldIndex(new[] { name }, index, isTryGet);
+		return GetFieldIndex([name], index, isTryGet);
 	}
 
 	/// <inheritdoc/>
 	public virtual int GetFieldIndex(string[] names, int index = 0, bool isTryGet = false, bool isOptional = false)
 	{
-		if (names == null)
-		{
-			throw new ArgumentNullException(nameof(names));
-		}
+		ArgumentNullException.ThrowIfNull(names);
 
 		if (!hasHeaderRecord)
 		{
@@ -284,9 +277,9 @@ public class CsvReader : IReader
 
 		// Caching the named index speeds up mappings that use ConvertUsing tremendously.
 		var nameKey = string.Join("_", names) + index;
-		if (namedIndexCache.ContainsKey(nameKey))
+		if (namedIndexCache.TryGetValue(nameKey, out (string, int) value))
 		{
-			(var cachedName, var cachedIndex) = namedIndexCache[nameKey];
+			(var cachedName, var cachedIndex) = value;
 			return namedIndexes[cachedName][cachedIndex];
 		}
 
@@ -376,13 +369,13 @@ public class CsvReader : IReader
 		{
 			var args = new PrepareHeaderForMatchArgs(headerRecord[i], i);
 			var name = prepareHeaderForMatch(args);
-			if (namedIndexes.ContainsKey(name))
+			if (namedIndexes.TryGetValue(name, out List<int> value))
 			{
-				namedIndexes[name].Add(i);
+				value.Add(i);
 			}
 			else
 			{
-				namedIndexes[name] = new List<int> { i };
+				namedIndexes[name] = [i];
 			}
 		}
 	}

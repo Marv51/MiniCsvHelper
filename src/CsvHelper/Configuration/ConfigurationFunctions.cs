@@ -8,8 +8,6 @@ namespace CsvHelper.Configuration;
 /// <summary>Holds the default callback methods for delegate members of <c>CsvHelper.Configuration.Configuration</c>.</summary>
 public static class ConfigurationFunctions
 {
-	private static readonly char[] lineEndingChars = ['\r', '\n'];
-
 	/// <summary>
 	/// Throws a <c>MissingFieldException</c>.
 	/// </summary>
